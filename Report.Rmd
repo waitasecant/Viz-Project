@@ -14,7 +14,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 TBA
 
 ## Data Description
-The data contains six air pollution parameters like PM2.5, PM10, NO2, NH3, SO2, Ozone for 15 stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis!
+The data contains six air pollution parameters like PM2.5, PM10, NO2, NH3, SO2, Ozone for 15 stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis.
 
 ```{r}
 # Importing libraries
