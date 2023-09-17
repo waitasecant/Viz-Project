@@ -26,16 +26,21 @@ library(ggplot2)
 
 ```{r}
 # Reading the data into data frame
-df <- read.csv("del.csv")
+df <- read.csv("delhi.csv")
 head(df)
 ```
 
 ## Exploratory Data Analysis
+
 ```{r}
 ```
+
 ## Results
+
 ```{r}
 ```
+
 ## Conclusion
+
 ```{r}
 ```
