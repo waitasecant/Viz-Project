@@ -19,9 +19,10 @@ The data contains six air pollution parameters like PM2.5, PM10, NO2, NH3, SO2, 
 ```{r}
 # Importing libraries
 library(tidyverse)
-library(sf)
-library(mapview)
+library(dplyr)
 library(ggplot2)
+library(TSstudio)
+library(plotly)
 ```
 
 ```{r}
@@ -29,7 +30,23 @@ library(ggplot2)
 df <- read.csv("delhi.csv")
 head(df)
 ```
+```{r}
+df$Date <- as.Date(df$Date)
+head(df)
+```
+```{r}
 
+```
+
+```{r}
+p <- ggplot(df[df$siteCode==1420,], aes(x=Date, y=PM2.5)) +
+       geom_line()
+p + scale_x_date(date_labels = "%b %Y")
+```
+```{r}
+#ts_plot(subset(df,siteCode==1420,select=c('Date','PM2.5')), title = "",
+#        Xtitle = "Time", Ytitle = "PM2.5 Levels", color = "black", width=1.5, slider = TRUE)
+```
 ## Exploratory Data Analysis
 
 ```{r}

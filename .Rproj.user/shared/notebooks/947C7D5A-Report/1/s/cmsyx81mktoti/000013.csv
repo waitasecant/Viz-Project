@@ -1,0 +1,3 @@
+"0","# Reading the data into data frame"
+"0","df <- read.csv(""delhi.csv"")"
+"0","head(df)"
