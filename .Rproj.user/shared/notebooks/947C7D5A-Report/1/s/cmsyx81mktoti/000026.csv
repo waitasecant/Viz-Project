@@ -1,0 +1,4 @@
+"0","# Reading the data into data frame"
+"0","df <- read.csv(""delhi.csv"", header = TRUE)"
+"0","set.seed(5)"
+"0","df[sample(nrow(df), 5), ]"

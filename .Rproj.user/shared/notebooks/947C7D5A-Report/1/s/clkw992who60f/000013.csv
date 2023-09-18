@@ -1,2 +1,2 @@
 "0","df$Date <- as.Date(df$Date)"
-"0","head(df)"
+"0","df[sample(nrow(df), 5), ]"

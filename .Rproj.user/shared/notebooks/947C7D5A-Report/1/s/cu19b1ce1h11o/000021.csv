@@ -1,2 +1,0 @@
-"0","#ts_plot(subset(df,siteCode==1420,select=c('Date','PM2.5')), title = """","
-"0","#        Xtitle = ""Time"", Ytitle = ""PM2.5 Levels"", color = ""black"", width=1.5, slider = TRUE)"

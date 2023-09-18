@@ -27,21 +27,49 @@ library(plotly)
 
 ```{r}
 # Reading the data into data frame
-df <- read.csv("delhi.csv")
-head(df)
+df <- read.csv("delhi.csv", header = TRUE)
+set.seed(5)
+df[sample(nrow(df), 5), ]
 ```
+```{r}
+# Variables in the data
+names(df)
+```
+```{r}
+# Dimension of the data
+dim(df)
+```
+```{r}
+# Variable types
+# Note the Date column has type chr which must be converted to date type.
+str(df)
+```
+
 ```{r}
 df$Date <- as.Date(df$Date)
-head(df)
+df[sample(nrow(df), 5), ]
 ```
 ```{r}
-
+str(df)
 ```
-
 ```{r}
+unique(df$siteName)
+```
+```{r}
+par(mfrow = c(2,3))
+hist(df$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
+hist(df$PM10, probability = TRUE, main = "", xlab = "PM10", ylab = "")
+hist(df$NO2, probability = TRUE, main = "", xlab = "NO2", ylab = "")
+hist(df$NH3, probability = TRUE, main = "", xlab = "NH3", ylab = "")
+hist(df$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
+hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
+```
+```{r}
+par(mfrow=c(1,2))
 p <- ggplot(df[df$siteCode==1420,], aes(x=Date, y=PM2.5)) +
        geom_line()
-p + scale_x_date(date_labels = "%b %Y")
+p + scale_x_date(date_labels = "%Y")
+#qplot(Date, PM2.5, data = df, geom = "line")
 ```
 ```{r}
 #ts_plot(subset(df,siteCode==1420,select=c('Date','PM2.5')), title = "",
