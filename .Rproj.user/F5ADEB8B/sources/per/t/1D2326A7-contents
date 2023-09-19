@@ -14,7 +14,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 TBA
 
 ## Data Description
-The data contains six air pollution parameters like PM2.5, PM10, NO2, NH3, SO2, Ozone for 15 stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis.
+The data contains six air pollution parameters like PM2.5, PM10, NO2, NH3, SO2, Ozone for 12 stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis.
 
 ```{r}
 # Importing libraries
@@ -57,23 +57,69 @@ unique(df$siteName)
 ```
 ```{r}
 par(mfrow = c(2,3))
-hist(df$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
-hist(df$PM10, probability = TRUE, main = "", xlab = "PM10", ylab = "")
-hist(df$NO2, probability = TRUE, main = "", xlab = "NO2", ylab = "")
-hist(df$NH3, probability = TRUE, main = "", xlab = "NH3", ylab = "")
-hist(df$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
-hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
+hist(df[df$siteCode==1420,]$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
+hist(df[df$siteCode==1420,]$PM10, probability = TRUE, main = "Ashok Vihar", xlab = "PM10", ylab = "")
+hist(df[df$siteCode==1420,]$NO2, probability = TRUE, main = "", xlab = "NO2", ylab = "")
+hist(df[df$siteCode==1420,]$NH3, probability = TRUE, main = "", xlab = "NH3", ylab = "")
+hist(df[df$siteCode==1420,]$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
+hist(df[df$siteCode==1420,]$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 ```
-```{r}
-par(mfrow=c(1,2))
-p <- ggplot(df[df$siteCode==1420,], aes(x=Date, y=PM2.5)) +
-       geom_line()
-p + scale_x_date(date_labels = "%Y")
-#qplot(Date, PM2.5, data = df, geom = "line")
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "")
+}
 ```
-```{r}
-#ts_plot(subset(df,siteCode==1420,select=c('Date','PM2.5')), title = "",
-#        Xtitle = "Time", Ytitle = "PM2.5 Levels", color = "black", width=1.5, slider = TRUE)
+\center Figure: The above graph shows the time series plot of PM2.5 parameter for all 15 stations in the data.
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
+```
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
+```
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
+```
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
+```
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
+```
+```{r, fig.width=15, fig.height=12}
+par(mar=c(2,2,2,2))
+par(mfrow=c(5,3))
+for (i in unique(df$siteName)) {
+  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
+  main = i, xlab = "", ylab = "PM2.5")
+}
 ```
 ## Exploratory Data Analysis
 

@@ -1,0 +1,2 @@
+"0","par(mfrow = c(2,3))"
+"0","hist(df[df$siteCode==1420,]$PM2.5, probability = TRUE, main = """", xlab = ""PM2.5"", ylab = """")"
