@@ -66,61 +66,14 @@ hist(df[df$siteCode==1420,]$Ozone, probability = TRUE, main = "", xlab = "Ozone"
 ```
 ```{r, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
+par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
   plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
   main = i, xlab = "", ylab = "")
 }
 ```
-\center Figure: The above graph shows the time series plot of PM2.5 parameter for all 15 stations in the data.
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,3))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "PM2.5")
-}
-```
+\center Figure: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.
+
 ## Exploratory Data Analysis
 
 ```{r}

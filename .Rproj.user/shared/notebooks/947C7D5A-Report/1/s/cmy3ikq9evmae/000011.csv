@@ -1,0 +1,6 @@
+"0","par(mar=c(2,2,2,2))"
+"0","par(mfrow=c(5,2))"
+"0","for (i in unique(df$siteName)) {"
+"0","  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = ""l"","
+"0","  main = i, xlab = """", ylab = """")"
+"0","}"
