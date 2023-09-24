@@ -17,7 +17,7 @@ In this report we try to discover patterns and make inferences about the polluti
 
 ## Data Description
 
-The data contains six air pollution parameters i.e. PM2.5, PM10, NO\textsubscript{2}, NH\textsubscript{3}, SO\textsubscript{2}, Ozone for ten stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis. There are 1030 entries for each station, one for all the dates between 08-02-2018 and 02-01-2021 (both inclusive). The data for the parameters is average of 24 hour data collected every 15 minutes. The units for all the parameters in the data are $\frac{\text{ug}}{\text{m}^3}$ that represents micrograms(one-millionth of a gram) of a gaseous pollutant per cubic meter of air.
+The data contains 10600 rows and 9 columns, namely, siteName, siteCode, Date and six air pollution parameters i.e. PM2.5, PM10, NO\textsubscript{2}, NH\textsubscript{3}, SO\textsubscript{2}, Ozone for ten stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis. There are 1060 entries for each station, one for all the dates between 08-02-2018 and 02-01-2021 (both inclusive). The data for the parameters is average of 24 hour data collected every 15 minutes. The units for all the parameters in the data are $\frac{\text{ug}}{\text{m}^3}$ that represents micrograms(one-millionth of a gram) of a gaseous pollutant per cubic meter of air.
 
 ```{=tex}
 \begin{table}[h!]
@@ -34,6 +34,7 @@ The data contains six air pollution parameters i.e. PM2.5, PM10, NO\textsubscrip
   Patparganj&1431&2018-10-27&189.89&384.89&63.65&85.26&4.39&18.85\\[1.05ex] \hline
 \end{tabular}
 \caption{A glimpse of random sample of the data.}
+\label{table1}
 \end{table}
 ```
 
@@ -51,10 +52,15 @@ The names of all ten stations with their respective site codes are displayed in 
   \textbf{Site Code}&1431&1430&1432&1435&1434\\ \hline 
 \end{tabular}
 \caption{Site Names and corresponding Site Codes}
+\label{table2}
 \end{table}
 ```
+\newpage
 
-```{r, echo=FALSE}
+## Exploratory Data Analysis
+We use the following libraries for handling data and creating plots for this report.
+
+```{r, results='hide'}
 # Importing libraries
 library(tidyverse)
 library(dplyr)
@@ -62,48 +68,38 @@ library(ggplot2)
 library(knitr)
 ```
 
-```{r}
-# Reading the data into data frame
+```{r, include=FALSE}
+# We read our data into a data frame
 df <- read.csv("delhi.csv", header = TRUE)
-set.seed(101)
-df[sample(nrow(df), 5), ]
 ```
 
+Since our data has a date column, we would want to exploit it to our use to plot some time-series plots and analysis. As displayed in table \ref{table1}, the data column has type chr, so we must first convert it to date type.
 
-
-```{r,include=FALSE}
-# Variables in the data
-names(df)
-```
-
-```{r,include=FALSE}
-# Dimension of the data
-dim(df)
-```
-
-```{r,include=FALSE}
-# Variable types
-# Note the Date column has type chr which must be converted to date type.
-str(df)
-```
-
-```{r,include=FALSE}
+```{r,results='hide'}
+#Changing Date data type from chr to date
 df$Date <- as.Date(df$Date)
-df[sample(nrow(df), 5), ]
 ```
 
-```{r,include=FALSE}
-str(df)
+```{=tex}
+\begin{table}[h!]
+\centering
+%\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+  \hline
+  \textbf{siteName}&\textbf{siteCode}&\textbf{Date}&\textbf{PM2.5}&\textbf{PM10}&\textbf{NO\textsubscript{2}}&\textbf{NH\textsubscript{3}}&\textbf{SO\textsubscript{2}}&\textbf{Ozone}\\
+  {\scriptsize<chr>}&{\scriptsize<int>}&{\scriptsize<date>}&{\scriptsize<dbl>}&{\scriptsize<dbl>}&{\scriptsize<dbl>}&{\scriptsize<dbl>}&{\scriptsize<dbl>}&{\scriptsize<dbl>}\\ \hline
+  Sonia Vihar&1432&2019-09-19&17.62&65.71&13.18&26.37&12.64&36.09\\[1.05ex] \hline
+  Jahangirpuri&1423&2020-03-01&51.20&120.17&72.40&36.34&2.04&12.23\\[1.05ex] \hline
+  Wazirpur&1434&2020-04-12&44.46&85.50&32.24&23.36&14.07&52.15\\[1.05ex] \hline      
+  Najafgarh&1427&2018-05-19&100.06&287.78&28.60&46.65&7.63&73.52\\[1.05ex] \hline
+  Patparganj&1431&2018-10-27&189.89&384.89&63.65&85.26&4.39&18.85\\[1.05ex] \hline
+\end{tabular}
+\caption{A glimpse of random sample of the data after chnaging type of Date column.}
+\label{table3}
+\end{table}
 ```
-
-```{r,echo=FALSE}
-unique(df$siteName)
-```
-```{r}
-unique(df$siteCode)
-```
-
-```{r}
+\newpage
+```{r, echo=FALSE}
 par(mfrow = c(2,3))
 hist(df[df$siteCode==1420,]$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
 hist(df[df$siteCode==1420,]$PM10, probability = TRUE, main = "Ashok Vihar", xlab = "PM10", ylab = "")
@@ -113,7 +109,7 @@ hist(df[df$siteCode==1420,]$SO2, probability = TRUE, main = "", xlab = "SO2", yl
 hist(df[df$siteCode==1420,]$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 ```
 
-```{r, fig.width=15, fig.height=12}
+```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
 par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
@@ -124,7 +120,7 @@ for (i in unique(df$siteName)) {
 
 \center Figure: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.
 
-```{r, fig.width=15, fig.height=12}
+```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
 par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
@@ -135,59 +131,12 @@ for (i in unique(df$siteName)) {
 
 \center Figure: The above graph shows the time series plot of PM10 parameter for all 10 stations in the data.
 
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,2))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$NO2, type = "l",
-  main = i, xlab = "", ylab = "")
-}
-```
-
-\center Figure: The above graph shows the time series plot of NO2 parameter for all 10 stations in the data.
-
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,2))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$NH3, type = "l",
-  main = i, xlab = "", ylab = "")
-}
-```
-
-\center Figure: The above graph shows the time series plot of NH3 parameter for all 10 stations in the data.
-
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,2))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$SO2, type = "l",
-  main = i, xlab = "", ylab = "")
-}
-```
-
-\center Figure: The above graph shows the time series plot of SO2 parameter for all 10 stations in the data.
-
-```{r, fig.width=15, fig.height=12}
-par(mar=c(2,2,2,2))
-par(mfrow=c(5,2))
-for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$Ozone, type = "l",
-  main = i, xlab = "", ylab = "")
-}
-```
-
-\center Figure: The above graph shows the time series plot of Ozone parameter for all 10 stations in the data. \## Exploratory Data Analysis
-
-```{r}
-```
-
 ## Results
 
-```{r}
+```{r, include=FALSE}
 ```
 
 ## Conclusion
 
-```{r}
+```{r, include=FALSE}
 ```
