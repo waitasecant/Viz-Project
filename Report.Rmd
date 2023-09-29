@@ -3,6 +3,9 @@ title: "Project Component 1"
 author: "Himanshu, MDS202327"
 date: "`r Sys.Date()`"
 output:
+#   bookdown::pdf_document2:
+#     latex_engine: xelatex
+# urlcolor: blue
   pdf_document: default
   html_document: default
 ---
@@ -17,7 +20,7 @@ In this report we try to discover patterns and make inferences about the polluti
 
 ## Data Description
 
-The data contains 10600 rows and 9 columns, namely, siteName, siteCode, Date and six air pollution parameters i.e. PM2.5, PM10, NO\textsubscript{2}, NH\textsubscript{3}, SO\textsubscript{2}, Ozone for ten stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis. There are 1060 entries for each station, one for all the dates between 08-02-2018 and 02-01-2021 (both inclusive). The data for the parameters is average of 24 hour data collected every 15 minutes. The units for all the parameters in the data are $\frac{\text{ug}}{\text{m}^3}$ that represents micrograms(one-millionth of a gram) of a gaseous pollutant per cubic meter of air.
+The data contains 10,600 rows and 9 columns, namely, siteName, siteCode, Date and six air pollution parameters i.e. PM2.5, PM10, NO\textsubscript{2}, NH\textsubscript{3}, SO\textsubscript{2}, Ozone for ten stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis. There are 1060 entries for each station, one for all the dates between 08-02-2018 and 02-01-2021 (both inclusive). The data for the parameters is average of 24 hour data collected every 15 minutes. The units for all the parameters in the data are $\frac{\text{ug}}{\text{m}^3}$ that represents micrograms(one-millionth of a gram) of a gaseous pollutant per cubic meter of air.
 
 ```{=tex}
 \begin{table}[h!]
@@ -66,6 +69,7 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(knitr)
+library(bookdown)
 ```
 
 ```{r, include=FALSE}
@@ -111,11 +115,17 @@ hist(df$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
 hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 ```
 
-\center{Figure: The above graph shows the distribution of values of the six pollutant parameters.}
+\center{Figure 1: The above graph shows the distribution of values of the six pollutant parameters.}
 
 \newpage
 
-\flushleft{An important part of exploratory data analysis is to find out which parameters are correlated, positive or negative. This helps one decide on which parameters to include in their prediction model.}\
+```{=tex}
+\flushleft
+\textbf{A Pair Plot}
+```
+
+\flushleft{An important part of exploratory data analysis is to find out which parameters are correlated, positive or negative. This helps one decide on which parameters to include in their prediction model. Since there are 10,600 data points in our data and also since all the stations are present in Delhi, without the loss of generality, we will look at the pair plot of parameter values for the station Rohini, station code 1430.}\
+\
 \
 
 ```{r, echo=FALSE,  fig.width=10, fig.height=10}
@@ -123,35 +133,64 @@ pairs(~ PM2.5 + PM10 + NO2 + NH3 + SO2  +Ozone, data = df[df$siteName=="Rohini",
       col = rgb(0, 0, 0, 0.15))
 ```
 
-\center{Figure: The above graph shows the correlation between all the six pollutant parameters.}
+\center{Figure 2: The above graph shows the pair plot for all the six pollutant parameters.}
 
 \newpage
+
+```{=tex}
+\flushleft
+\textbf{A Time-Series Plot}
+```
+\flushleft{Since we have a time-stamped data, one of the basic analysis in time-series is to find the trends across time. For the sake of simplicity we will show time series plots for only one parameter i.e. PM2.5 for all the stations. The y-axis has been adjusted to same scale for ease of analysis.}\
+\
+\
+
 ```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
 par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
   plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
-  main = i, xlab = "", ylab = "")
+  main = i, xlab = "", ylab = "", ylim = c(0,700))
+  # axis(1, at = as.Date("2018-10-15"), labels = "Oct")
+  # axis(1, at = as.Date("2019-10-15"), labels = "Oct")
+  # axis(1, at = as.Date("2020-10-15"), labels = "Oct")
+
+  # axis(1, at = as.Date("2019-02-15"), labels = "Feb")
+  # axis(1, at = as.Date("2020-02-15"), labels = "Feb")
 }
 ```
 
-\center Figure: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.
+\center Figure 3: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.
+
+\newpage
 
 ```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
 par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
-  plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM10, type = "l",
-  main = i, xlab = "", ylab = "")
+  x0 = df[df$siteName==i,]$Date
+  y0 = df[df$siteName==i,]$PM2.5
+  x1 = x0+1
+  y1 = y0[2:length(y0)]
+  
+  colour <- ifelse((df[df$siteName==i,]$PM2.5<400),"black", "red")
+  
+  plot(x0, y0, type="n", main = i, xlab = "", ylab = "", ylim = c(0,700), lwd.ticks=2)
+  
+  segments(x0 = x0, y0 = y0, x1 = x1, y1 = y1, col = colour)
+  
+  axis(1, at = as.Date("2018-10-15"), labels = "Oct", lwd.ticks=2)
+  axis(1, at = as.Date("2019-10-15"), labels = "Oct", lwd.ticks=2)
+  axis(1, at = as.Date("2020-10-15"), labels = "Oct", lwd.ticks=2)
+  
+  axis(1, at = as.Date("2019-02-15"), labels = "Feb", lwd.ticks=2)
+  axis(1, at = as.Date("2020-02-15"), labels = "Feb", lwd.ticks=2)
 }
+# col=ifelse(((x<as.Date("2019-10-15") & x>as.Date("2020-02-15"))),"red", "blue")
 ```
-
-\center Figure: The above graph shows the time series plot of PM10 parameter for all 10 stations in the data.
 
 ## Results
 
-```{r, include=FALSE}
-```
 
 ## Conclusion
 
