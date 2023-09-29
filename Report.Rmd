@@ -13,7 +13,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ## Introduction
 
-In this report we try to discover patterns and make inferences about the pollution level in stations in and around Delhi.
+In this report we try to discover patterns and make inferences about the pollution level in stations in and around Delhi. We also look at the relation between the pollutant parameters and try to find which parameter are related to each other and see if this is the case across all ten stations.
 
 ## Data Description
 
@@ -98,17 +98,34 @@ df$Date <- as.Date(df$Date)
 \label{table3}
 \end{table}
 ```
-\newpage
-```{r, echo=FALSE}
+
+**We now start with visualizing some graphs!**
+
+```{r, echo=FALSE,  fig.width=10, fig.height=6}
 par(mfrow = c(2,3))
-hist(df[df$siteCode==1420,]$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
-hist(df[df$siteCode==1420,]$PM10, probability = TRUE, main = "Ashok Vihar", xlab = "PM10", ylab = "")
-hist(df[df$siteCode==1420,]$NO2, probability = TRUE, main = "", xlab = "NO2", ylab = "")
-hist(df[df$siteCode==1420,]$NH3, probability = TRUE, main = "", xlab = "NH3", ylab = "")
-hist(df[df$siteCode==1420,]$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
-hist(df[df$siteCode==1420,]$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
+hist(df$PM2.5, probability = TRUE, main = "", xlab = "PM2.5", ylab = "")
+hist(df$PM10, probability = TRUE, main = "", xlab = "PM10", ylab = "")
+hist(df$NO2, probability = TRUE, main = "", xlab = "NO2", ylab = "")
+hist(df$NH3, probability = TRUE, main = "", xlab = "NH3", ylab = "")
+hist(df$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
+hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 ```
 
+\center{Figure: The above graph shows the distribution of values of the six pollutant parameters.}
+
+\newpage
+
+\flushleft{An important part of exploratory data analysis is to find out which parameters are correlated, positive or negative. This helps one decide on which parameters to include in their prediction model.}\
+\
+
+```{r, echo=FALSE,  fig.width=10, fig.height=10}
+pairs(~ PM2.5 + PM10 + NO2 + NH3 + SO2  +Ozone, data = df[df$siteName=="Rohini",], pch=20,
+      col = rgb(0, 0, 0, 0.15))
+```
+
+\center{Figure: The above graph shows the correlation between all the six pollutant parameters.}
+
+\newpage
 ```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
 par(mfrow=c(5,2))
