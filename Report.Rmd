@@ -16,7 +16,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ## Introduction
 
-In this report we try to discover patterns and make inferences about the pollution level in stations in and around Delhi. We also look at the relation between the pollutant parameters and try to find which parameter are related to each other and see if this is the case across all ten stations.
+In this report we try to discover patterns and make inferences about the pollution level in stations in and around Delhi. We also look at the relation between the pollutant parameters and try to find which parameter are related to each other and see if there is a pattern across all ten stations.
 
 ## Data Description
 
@@ -169,11 +169,14 @@ ggplot(data = melted_cor, aes(x=Var1, y=Var2, fill=value)) +
         axis.text.x = element_text(size=12), axis.text.y = element_text(size=12),
         panel.background = element_blank())
 ```
-\center{Figure 3: The above graph shows the correlation plot for all six pollutants in the data.}\
-\
+\center{Figure 3: The above graph shows the correlation plot for all six pollutants in the data.}
+\vspace{1.5cm}
 
-```{r, echo=FALSE, fig.width=6, fig.height=4}
+```{r, echo=FALSE, fig.width=6, fig.height=4, fig.align = 'left'}
+x = df$PM2.5
+y = df$PM10
 plot(df$PM2.5, df$PM10, pch=20,col = rgb(0, 0, 0, 0.15), main = "", xlab = "PM2.5", ylab = "PM10")
+abline(lm(y ~ x, data = df), col = "red", lw = 2, lty=6)
 ```
 \center{Figure 4: Scatter plot of highest correlated parameters PM2.5 and PM10.}
 \newpage
@@ -239,9 +242,33 @@ for (i in unique(df$siteName)) {
 
 ## Results
 
-***
+* From Figure 1, we see that PM2.5 resembles exponential and PM10 and Ozone resembles as left-skewed normal.
+
+
+* From Figure 2, most of the parameters seem to have slightly correlation with each other, while we suspect PM2.5 and PM10 to be highly correlated as all the particles in PM2.5 are included in PM10.
+
+
+* From Figure 3, we see that in fact our guess from Figure 2 is correct. PM2.5 and PM10 do actually have a strong correlation of 0.89 while other are slightly correlated
+
+
+* From Figure 4, we see that both PM2.5 and PM10 have linear relation.
+
+
+* From Figure 5, we see that there are subtle jumps in value of PM2.5 parameter across all the stations and repeats at equal interval.
+
+
+* From Figure 6, we see that in fact the jumps are between the moth of October and February.
+
+\vspace{2cm}
 
 ## Conclusion
+Recalling our problem statement,
 
-```{r, include=FALSE}
-```
+*In this report we try to discover patterns and make inferences about the pollution level in stations in and around Delhi. We also look at the relation between the pollutant parameters and try to find which parameter are related to each other and see if there is a pattern across all ten stations.*
+
+We do conclude that:
+
+**Yes**, the pollutants are related.
+
+**Yes**, a pattern can be observed across all the stations.
+
