@@ -62,9 +62,9 @@ The names of all ten stations with their respective site codes are displayed in 
 
 ## Exploratory Data Analysis
 
-We use the following libraries for handling data and creating plots for this report.
+<!-- We use the following libraries for handling data and creating plots for this report. -->
 
-```{r, results='hide'}
+```{r, results='hide', include=FALSE}
 # Importing libraries
 library(tidyverse)
 library(dplyr)
@@ -105,7 +105,14 @@ df$Date <- as.Date(df$Date)
 \end{table}
 ```
 
-**We now start with visualizing some graphs!**
+\vspace{1cm}
+
+```{=tex}
+\flushleft
+\textbf{\large An Histogram}
+```
+
+We would naturally want to see the range of the values attained by all the parameters and the density with which these are attained. Hence, histograms come handy.
 
 ```{r, echo=FALSE,  fig.width=10, fig.height=6}
 par(mfrow = c(2,3))
@@ -117,7 +124,7 @@ hist(df$SO2, probability = TRUE, main = "", xlab = "SO2", ylab = "")
 hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 ```
 
-\center{Figure 1: The above graph shows the distribution of values of the six pollutant parameters.}
+\center{Figure 1: The above graph shows the histogram of values of the six pollutant parameters.}
 
 \newpage
 
@@ -143,11 +150,11 @@ pairs(~ PM2.5 + PM10 + NO2 + NH3 + SO2  +Ozone, data = df[df$siteName=="Rohini",
 \flushleft
 \textbf{\large A Correlation Plot}
 ```
-\flushleft{A numerical view to pair plot is a correlation plot. The patterns between pollutant parameters we observed in the pair plot are expressed as a number between -1 and 1 called correlation coefficient. Here, we are not differentiating between positive correlation and negative correlation. We just look if they are correlated be it positive or negative. Hence we plot the absolute value of the correlation coefficient between parameters.}\\
-
-\flushleft{As going witht the theme of grey pallete we adjust the correlation between light grey to dark grey, where light grey represent no correlation and dark grey represent complete correlation.}\
+\flushleft{A numerical view to pair plot is a correlation plot. The patterns between pollutant parameters we observed in the pair plot are expressed as a number between -1 and 1 called correlation coefficient. Here, we are not differentiating between positive correlation and negative correlation. We just look if they are correlated be it positive or negative. Hence we plot the absolute value of the correlation coefficient between parameters.}\
 \
-\
+<!-- \flushleft{As going witht the theme of grey pallete we adjust the correlation between light grey to dark grey, where light grey represent no correlation and dark grey represent complete correlation.}\ -->
+<!-- \ -->
+<!-- \ -->
 
 ```{r, echo=FALSE, fig.width=7, fig.height=4}
 cor_df <- abs(round(cor(df[4:9]), 2))
@@ -157,12 +164,18 @@ ggplot(data = melted_cor, aes(x=Var1, y=Var2, fill=value)) +
   geom_tile() +
   geom_text(aes(Var2, Var1, label = value), size = 5) +
   scale_fill_gradient2(low = "lightgrey", high = "darkgrey",
-                       limit = c(0,1), name="Correlation") +
+                       limit = c(0,1), name="Absolute\nCorrelation\n") +
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(),
         axis.text.x = element_text(size=12), axis.text.y = element_text(size=12),
         panel.background = element_blank())
 ```
-\center{Figure 3: The above graph shows the correlation plot for all six pollutants in the data.}
+\center{Figure 3: The above graph shows the correlation plot for all six pollutants in the data.}\
+\
+
+```{r, echo=FALSE, fig.width=6, fig.height=4}
+plot(df$PM2.5, df$PM10, pch=20,col = rgb(0, 0, 0, 0.15), main = "", xlab = "PM2.5", ylab = "PM10")
+```
+\center{Figure 4: Scatter plot of highest correlated parameters PM2.5 and PM10.}
 \newpage
 
 ```{=tex}
@@ -180,16 +193,10 @@ par(mfrow=c(5,2))
 for (i in unique(df$siteName)) {
   plot(df[df$siteName==i,]$Date, df[df$siteName==i,]$PM2.5, type = "l",
   main = i, xlab = "", ylab = "", ylim = c(0,700))
-  # axis(1, at = as.Date("2018-10-15"), labels = "Oct")
-  # axis(1, at = as.Date("2019-10-15"), labels = "Oct")
-  # axis(1, at = as.Date("2020-10-15"), labels = "Oct")
-
-  # axis(1, at = as.Date("2019-02-15"), labels = "Feb")
-  # axis(1, at = as.Date("2020-02-15"), labels = "Feb")
 }
 ```
 
-\center{Figure 4: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.}
+\center{Figure 5: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.}
 
 \newpage
 
@@ -226,12 +233,13 @@ for (i in unique(df$siteName)) {
 }
 ```
 
-\flushleft{Figure 5: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data highlighted in red with the interval where there is a jump in PM2.5 values.}
+\flushleft{Figure 6: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data highlighted in red with the interval where there is a jump in PM2.5 values.}
 
 \newpage
 
 ## Results
 
+***
 
 ## Conclusion
 
