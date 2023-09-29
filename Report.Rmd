@@ -61,6 +61,7 @@ The names of all ten stations with their respective site codes are displayed in 
 \newpage
 
 ## Exploratory Data Analysis
+
 We use the following libraries for handling data and creating plots for this report.
 
 ```{r, results='hide'}
@@ -69,11 +70,12 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(knitr)
-library(bookdown)
+library(reshape2)
 ```
 
 ```{r, include=FALSE}
 # We read our data into a data frame
+# library(bookdown)
 df <- read.csv("delhi.csv", header = TRUE)
 ```
 
@@ -121,7 +123,7 @@ hist(df$Ozone, probability = TRUE, main = "", xlab = "Ozone", ylab = "")
 
 ```{=tex}
 \flushleft
-\textbf{A Pair Plot}
+\textbf{\large A Pair Plot}
 ```
 
 \flushleft{An important part of exploratory data analysis is to find out which parameters are correlated, positive or negative. This helps one decide on which parameters to include in their prediction model. Since there are 10,600 data points in our data and also since all the stations are present in Delhi, without the loss of generality, we will look at the pair plot of parameter values for the station Rohini, station code 1430.}\
@@ -139,8 +141,35 @@ pairs(~ PM2.5 + PM10 + NO2 + NH3 + SO2  +Ozone, data = df[df$siteName=="Rohini",
 
 ```{=tex}
 \flushleft
-\textbf{A Time-Series Plot}
+\textbf{\large A Correlation Plot}
 ```
+\flushleft{A numerical view to pair plot is a correlation plot. The patterns between pollutant parameters we observed in the pair plot are expressed as a number between -1 and 1 called correlation coefficient. Here, we are not differentiating between positive correlation and negative correlation. We just look if they are correlated be it positive or negative. Hence we plot the absolute value of the correlation coefficient between parameters.}\\
+
+\flushleft{As going witht the theme of grey pallete we adjust the correlation between light grey to dark grey, where light grey represent no correlation and dark grey represent complete correlation.}\
+\
+\
+
+```{r, echo=FALSE, fig.width=7, fig.height=4}
+cor_df <- abs(round(cor(df[4:9]), 2))
+melted_cor <- melt(cor_df)
+
+ggplot(data = melted_cor, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile() +
+  geom_text(aes(Var2, Var1, label = value), size = 5) +
+  scale_fill_gradient2(low = "lightgrey", high = "darkgrey",
+                       limit = c(0,1), name="Correlation") +
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(),
+        axis.text.x = element_text(size=12), axis.text.y = element_text(size=12),
+        panel.background = element_blank())
+```
+\center{Figure 3: The above graph shows the correlation plot for all six pollutants in the data.}
+\newpage
+
+```{=tex}
+\flushleft
+\textbf{\large A Time-Series Plot}
+```
+
 \flushleft{Since we have a time-stamped data, one of the basic analysis in time-series is to find the trends across time. For the sake of simplicity we will show time series plots for only one parameter i.e. PM2.5 for all the stations. The y-axis has been adjusted to same scale for ease of analysis.}\
 \
 \
@@ -160,9 +189,18 @@ for (i in unique(df$siteName)) {
 }
 ```
 
-\center Figure 3: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.
+\center{Figure 4: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data.}
 
 \newpage
+
+```{=tex}
+\flushleft
+\textbf{\large Another Time-Series Plot}
+```
+
+\flushleft{As stated previously, our main objective is to look for trends. This plot is same as the previous plot but added with educated guess of ticks where there is a trend. A regular jump in values of pollutant parameter PM2.5 between the month of October and February every year. The colued region is from Oct 15 to Feb 15 every year. This trend can be observed uniformly at all ten stations.}\
+\
+\
 
 ```{r, echo=FALSE, fig.width=15, fig.height=12}
 par(mar=c(2,2,2,2))
@@ -172,12 +210,12 @@ for (i in unique(df$siteName)) {
   y0 = df[df$siteName==i,]$PM2.5
   x1 = x0+1
   y1 = y0[2:length(y0)]
-  
-  colour <- ifelse((df[df$siteName==i,]$PM2.5<400),"black", "red")
-  
+  cond1 = ((x0>as.Date("2018-10-15") & x0<as.Date("2019-02-15")))
+  cond2 = ((x0>as.Date("2019-10-15") & x0<as.Date("2020-02-15")))
+  cond3 = ((x0>as.Date("2020-10-15")))
+  colour1 <- ifelse((cond1 | cond2 | cond3),"red", "black")
   plot(x0, y0, type="n", main = i, xlab = "", ylab = "", ylim = c(0,700), lwd.ticks=2)
-  
-  segments(x0 = x0, y0 = y0, x1 = x1, y1 = y1, col = colour)
+  segments(x0 = x0, y0 = y0, x1 = x1, y1 = y1, col = colour1)
   
   axis(1, at = as.Date("2018-10-15"), labels = "Oct", lwd.ticks=2)
   axis(1, at = as.Date("2019-10-15"), labels = "Oct", lwd.ticks=2)
@@ -186,8 +224,11 @@ for (i in unique(df$siteName)) {
   axis(1, at = as.Date("2019-02-15"), labels = "Feb", lwd.ticks=2)
   axis(1, at = as.Date("2020-02-15"), labels = "Feb", lwd.ticks=2)
 }
-# col=ifelse(((x<as.Date("2019-10-15") & x>as.Date("2020-02-15"))),"red", "blue")
 ```
+
+\flushleft{Figure 5: The above graph shows the time series plot of PM2.5 parameter for all 10 stations in the data highlighted in red with the interval where there is a jump in PM2.5 values.}
+
+\newpage
 
 ## Results
 
