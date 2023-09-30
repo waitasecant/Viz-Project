@@ -23,6 +23,10 @@ In this report we try to discover patterns and make inferences about the polluti
 The data contains 10,600 rows and 9 columns, namely, siteName, siteCode, Date and six air pollution parameters i.e. PM2.5, PM10, NO\textsubscript{2}, NH\textsubscript{3}, SO\textsubscript{2}, Ozone for ten stations in New Delhi, collected from CPCB website from 08-02-2018 to 02-01-2021 on daily basis. There are 1060 entries for each station, one for all the dates between 08-02-2018 and 02-01-2021 (both inclusive). The data for the parameters is average of 24 hour data collected every 15 minutes. The units for all the parameters in the data are $\frac{\text{ug}}{\text{m}^3}$ that represents micrograms(one-millionth of a gram) of a gaseous pollutant per cubic meter of air.
 
 ```{=tex}
+Data file \texttt{delhi.csv} available in the repository for this project \href{https://github.com/waitasecant/Viz-Project.git}{here}.
+```
+
+```{=tex}
 \begin{table}[h!]
 \centering
 %\renewcommand{\arraystretch}{1.35}
