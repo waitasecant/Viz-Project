@@ -222,9 +222,9 @@ for (i in unique(df$siteName)) {
   cond3 = ((x0>as.Date("2020-10-15")))
   colour1 <- ifelse((cond1 | cond2 | cond3),"red", "black")
   
-  colour2 <- ifelse((cond1 | cond2 | cond3),ifelse(y0>290, "red", "darkorange"),
+  colour2 <- ifelse((cond1 | cond2 | cond3),ifelse(y0>300, "red", "darkorange"),
                     ifelse(y0>300, "red", "black"))
-  plot(x0, y0, type="n", main = i, xlab = "", ylab = "", ylim = c(0,700), lwd.ticks=2)
+  plot(x0, y0, type="n", main = i, xlab = "", ylab = "", ylim = c(0,700))
   segments(x0 = x0, y0 = y0, x1 = x1, y1 = y1, col = colour2)
   
   axis(1, at = as.Date("2018-10-15"), labels = "Oct", lwd.ticks=2)
