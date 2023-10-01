@@ -78,7 +78,7 @@ library(reshape2)
 ```{r, include=FALSE}
 # We read our data into a data frame
 # library(bookdown)
-df <- read.csv("delhi.csv", header = TRUE)
+df <- read.csv("pre_delhi_data.csv", header = TRUE)
 ```
 
 Since our data has a date column, we would want to exploit it to our use to plot some time-series plots and analysis. As displayed in table \ref{table1}, the data column has type chr, so we must first convert it to date type.
